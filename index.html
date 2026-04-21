@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 
@@ -575,37 +574,6 @@
                     <p>Sign in to continue your journey</p>
                 </div>
 
-                <!-- Session Messages -->
-                <?php if (isset($_SESSION['register_success'])): ?>
-                    <div class="alert-luxury alert-success" data-aos="fade-up" data-aos-delay="150">
-                        <i class="fas fa-check-circle"></i>
-                        <div class="alert-content">
-                            <?php echo $_SESSION['register_success'];
-                            unset($_SESSION['register_success']); ?>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
-                <?php if (isset($_SESSION['logout_success'])): ?>
-                    <div class="alert-luxury alert-success" data-aos="fade-up" data-aos-delay="150">
-                        <i class="fas fa-check-circle"></i>
-                        <div class="alert-content">
-                            <?php echo $_SESSION['logout_success'];
-                            unset($_SESSION['logout_success']); ?>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
-                <?php if (isset($_SESSION['login_error'])): ?>
-                    <div class="alert-luxury alert-danger" data-aos="fade-up" data-aos-delay="150">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <div class="alert-content">
-                            <?php echo $_SESSION['login_error'];
-                            unset($_SESSION['login_error']); ?>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
                 <!-- Login Form -->
                 <form action="./auth/login" method="POST">
                     <div class="form-group" data-aos="fade-up" data-aos-delay="200">
@@ -625,6 +593,14 @@
                                 <i class="fas fa-eye"></i>
                             </button>
                         </div>
+                    </div>
+
+                    <div class="options-row" data-aos="fade-up" data-aos-delay="300">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="rememberMe">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="forgot-password" class="forgot-link">Forgot Password?</a>
                     </div>
 
                     <button type="submit" class="btn-login" id="loginBtn" data-aos="fade-up" data-aos-delay="350">
@@ -680,6 +656,29 @@
             const icon = this.querySelector('i');
             icon.classList.toggle('fa-eye');
             icon.classList.toggle('fa-eye-slash');
+        });
+
+        // Remember Me functionality
+        const rememberCheckbox = document.getElementById('rememberMe');
+        const usernameInput = document.getElementById('username');
+
+        if (localStorage.getItem('rememberedUsername')) {
+            usernameInput.value = localStorage.getItem('rememberedUsername');
+            rememberCheckbox.checked = true;
+        }
+
+        rememberCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                localStorage.setItem('rememberedUsername', usernameInput.value);
+            } else {
+                localStorage.removeItem('rememberedUsername');
+            }
+        });
+
+        usernameInput.addEventListener('input', function() {
+            if (rememberCheckbox.checked) {
+                localStorage.setItem('rememberedUsername', this.value);
+            }
         });
 
         document.getElementById('username').focus();
